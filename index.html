@@ -2,15 +2,106 @@
 <html>
 <head>
 <title>SkyPirate</title>
+<style>
+  body {
+    margin: 0; /* Remove default body margin */
+    font-family: sans-serif; /* Use a default font */
+  }
+
+  .navbar {
+    background-color: #333; /* Dark background color */
+    overflow: hidden; /* Prevent content from overflowing */
+    position: fixed; /* Stick to the top */
+    top: 0; /* Align to the very top */
+    width: 100%; /* Full width */
+    z-index: 100; /* Ensure it's on top of other content */
+  }
+
+  .navbar a {
+    float: left; /* Arrange links horizontally */
+    display: block; /* Make the whole area clickable */
+    color: white; /* White text color */
+    text-align: center; /* Center the text */
+    padding: 14px 16px; /* Add padding around text */
+    text-decoration: none; /* Remove underlines */
+  }
+
+  .dropdown {
+    float: left;
+    overflow: hidden;
+  }
+
+  .dropdown .dropbtn {
+    background-color: inherit; /* Use parent's background color */
+    color: white;
+    padding: 14px 16px;
+    border: none;
+    cursor: pointer;
+  }
+
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+
+  .dropdown-content a {
+    float: none;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left; /* Align dropdown items to the left */
+  }
+
+  .dropdown-content a:hover {
+    background-color: #ddd;
+  }
+
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+
+  h1 {
+    font-size: 100px;
+    text-align: center; /* Center the h1 */
+    margin-top: 70px; /* Add top margin to avoid overlap with navbar */
+    color: blue;
+  }
+
+  p {
+      text-align: center;
+  }
+
+  p2 {
+      text-align: center;
+  }
+</style>
 </head>
 <body>
-<style>
-    h1 {font-size: 100 px;}
-</style>
-<h1 style="color:blue;">skypirate.org</h1>
+
+<div class="navbar">
+  <a href="#">Home</a>
+  <a href="#">About</a>
+  <div class="dropdown">
+    <button class="dropbtn">Dropdown</button>
+    <div class="dropdown-content">
+      <a href="#">Link 1</a>
+      <a href="#">Link 2</a>
+      <a href="#">Link 3</a>
+    </div>
+  </div>
+    <a href="#">Contact</a>
+</div>
+
+<h1>skypirate.org</h1>
 <p>what <small>should</small> I put here!</p>
 <p2>The best website is <del>skypirate.webflow.io</del> skypirate.org</p2>
-    <p>Discord:<br>nope</p>
-     <p>im new to html :D</p>
+<p>Discord:<br>nope</p>
+<p>im new to html :D</p>
+
 </body>
 </html>
