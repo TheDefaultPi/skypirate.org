@@ -1,124 +1,110 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>SkyPirate</title>
-<style>
-  body {
-    margin: 0;
-    font-family: sans-serif;
-    background-color: white; 
-  }
-
-  .navbar {
-    background-color: #333;
-    overflow: hidden;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 100;
-  }
-
-  .navbar a {
-    float: left;
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-  }
-
-  .dropdown {
-    float: left;
-    overflow: hidden;
-  }
-
-  .dropdown .dropbtn {
-    background-color: inherit;
-    color: white;
-    padding: 14px 16px;
-    border: none;
-    cursor: pointer;
-  }
-
-  .dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-  }
-
-  .dropdown-content a {
-    float: none;
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    text-align: left;
-  }
-
-  .dropdown-content a:hover {
-    background-color: #ddd;
-  }
-
-  .dropdown:hover .dropdown-content {
-    display: block;
-  }
-
-  h1 {
-    font-size: 100px;
-    text-align: center;
-    margin-top: 70px;
-    color: blue;
-  }
-
-  p {
-    text-align: center;
-  }
-
-  p2 {
-    text-align: center;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manhattanhenge Simulation</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; background: #222; color: white; }
+    canvas { background: #444; display: block; margin: 20px auto; }
+    button { margin: 10px; padding: 10px 20px; font-size: 16px; }
+  </style>
 </head>
 <body>
-<div class="navbar">
-  <a href="index.html">Home</a>
-  <a href="about.html">About</a>
-  <div class="dropdown">
-    <button class="dropbtn">Dropdown</button>
-    <div class="dropdown-content">
-      <a href="https://namemc.com/profile/DefaultPi.1">https://namemc.com/profile/DefaultPi.1</a>
-      <a href="#">Link 2</a>
-      <a href="#">Link 3</a>
-    </div>
+  <h1>Manhattanhenge Simulation</h1>
+  <canvas id="simCanvas" width="600" height="300"></canvas>
+  <div>
+    <button onclick="togglePause()" id="pauseBtn">Pause</button>
+    <button onclick="restartSim()">Restart</button>
   </div>
-  <a href="#">Contact (click still in beta)</a>
-</div>
+  <script>
+    const canvas = document.getElementById('simCanvas');
+    const ctx = canvas.getContext('2d');
 
-<h1>skypirate.org</h1>
+    let t = 0;
+    let paused = false;
+    let animationFrame;
 
-<p>Welcome to SkyPirate! This website is run by defaultpi.</p>
+    const startTime = 20 + (12 / 60); 
+    const endTime = 22;  
+    const streetNames = ["14th Ave", "15th Ave", "16th Ave", "17th Ave", "18th Ave", "19th Ave", "20th Ave", "21st Ave", "22nd Ave", "23rd Ave", "24th Ave"];
 
-<p>About defaultpi:</p>
+    function drawStreetGrid() {
+      ctx.fillStyle = '#222';
+      ctx.font = '12px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
 
-<p>Discord: defaultpi</p>
-<p>DM me on discord only for questions and feedback</p>
-  <p>https://www.mediafire.com/file/kbvfgffnkzcw1sd/tampermonkey.zip/file (tampermoney unblocked on school, dont use if you dont know what your doing)</p>
-  <p>RENAME THE FILE TO .ZIP INSTEAD OF .CRX VERY IMPORTANT</p>
-  <p>Unzip the file</p>
-  <p>chrome://extensions to inject</p>
-  <p>github.com/TheDefaultPi for the DefaultKAH</p>
+      let i = 0;
+      for (let x = 0; x < canvas.width; x += 60) {
+        ctx.fillRect(x, 0, 20, canvas.height);
 
-<h1>Button</h1>
+        const percent = x / canvas.width;
+        const time = startTime + percent * (endTime - startTime);
+        let hours = Math.floor(time);
+        const minutes = Math.round((time - hours) * 60);
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        if (hours === 0) hours = 12;
+        const label = `${hours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
+        ctx.fillStyle = 'white';
+        ctx.fillText(label, x + 10, canvas.height - 35);
 
-  <div style="display: flex; justify-content: center;">
-  <button type="button" onclick='document.getElementById("demo").innerHTML = "Answer 2"'>Click Me</button>
-</div>
-  
-<p id="demo">Answer 1</p>
+        const street = streetNames[i % streetNames.length];
+        ctx.fillText(street, x + 10, canvas.height - 20);
+        ctx.fillStyle = '#222';
+        i++;
+      }
+    }
 
+    function drawSun(x, y) {
+      ctx.beginPath();
+      ctx.arc(x, y, 20, 0, Math.PI * 2);
+      ctx.fillStyle = '#FDB813';
+      ctx.fill();
+      ctx.closePath();
+    }
+
+    function drawAlignmentEffect(x) {
+      if (x > 260 && x < 340) {
+        ctx.fillStyle = 'rgba(255, 215, 0, 0.2)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+    }
+
+    function draw(x, y) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawStreetGrid();
+      drawAlignmentEffect(x);
+      drawSun(x, y);
+    }
+
+    function update() {
+      if (!paused) {
+        t += 0.003; 
+        if (t > 1) t = 0;
+      }
+
+      const x = t * canvas.width;
+      const y = canvas.height - 30 - Math.sin(Math.PI * t) * 150;
+
+      draw(x, y);
+      animationFrame = requestAnimationFrame(update);
+    }
+
+    function togglePause() {
+      paused = !paused;
+      document.getElementById('pauseBtn').textContent = paused ? 'Resume' : 'Pause';
+    }
+
+    function restartSim() {
+      t = 0;
+      paused = false;
+      document.getElementById('pauseBtn').textContent = 'Pause';
+    }
+
+    update();
+  </script>
+  <img src="" alt="map">
 </body>
 </html>
-
