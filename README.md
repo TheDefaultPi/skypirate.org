@@ -1,7 +1,6 @@
 ## Manhattanhenge Simulation
 
 Made by DefaultPi and Euphonical2
-
 for a school project
 
 
