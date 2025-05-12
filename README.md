@@ -1,5 +1,7 @@
 ## Manhattanhenge Simulation
 
+## currently down for game testing
+
 Made by DefaultPi and Euphonical2
 for a school project
 
