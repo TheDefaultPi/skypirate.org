@@ -65,19 +65,24 @@
     <ol>
       <li><strong>Check Server Version:</strong> If using 1.19+, chat signing is the main issue. If your server is 1.19 and below, this isnt for you (update your server)</li>
       <li><strong>Install NoEncryption (Or skip to step 2½):</strong> Download and place <a href="https://modrinth.com/plugin/noencryption" target="_blank">NoEncryption</a> (or DisableChatSigning) into the <code>plugins/</code> folder, then restart the server.
-  <p>2½. If you don’t want to use plugins (Paper only), edit <code>config/paper-global.yml</code> and set:</p>
+  <p>2½. <strong>If you don’t want to use plugins</strong> (Paper only), edit <code>config/paper-global.yml</code> and set:</p>
    <pre style="background-color:#f3f4f6; padding:1rem; border-radius:8px; overflow-x:auto;">
 messages:
   chat:
     signed: false
   </pre>
 </li>
-      <li><strong>Edit Floodgate Config:</strong> Open <code>plugins/Floodgate/config.yml</code> and change  
-        <pre>username-prefix: "*" <-- Please use this (it looks nicer and almost every server uses it)</pre>  
-        or change it how you like
-        Example:
-        <pre>username-prefix: "Bed_"</pre>
-      </li>
+      <li><strong>Edit Floodgate Config:</strong> Open <code>plugins/Floodgate/config.yml</code> and change
+  <pre style="background-color:#f3f4f6; padding:1rem; border-radius:8px; overflow-x:auto;">
+username-prefix: "*"
+  </pre>
+  <p><em> <-- Please use this (it looks nicer and almost every server uses it)</em></p>
+
+  <p>Or change it how you like, for example:</p>
+  <pre style="background-color:#f3f4f6; padding:1rem; border-radius:8px; overflow-x:auto;">
+username-prefix: "Bed_"
+  </pre>
+</li>
       <li><strong>Check Permissions:</strong> Make sure Bedrock players have chat permissions (e.g., with LuckPerms).</li>
       <li><strong>Test Without Chat Plugins:</strong> Temporarily remove EssentialsXChat/VentureChat/DeluxeChat and restart to confirm chat works.</li>
     </ol>
