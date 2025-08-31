@@ -58,16 +58,24 @@
 </head>
 <body>
   <header>
-    <h1>Dear Hazel, or whoever is fixing this</h1>
+    <h1>Fixing bedrock Chat w/ Geyser and Floodgate</h1>
   </header>
   <main>
     <h2>Step-by-Step Guide to Fix Bedrock Chat</h2>
     <ol>
       <li><strong>Check Server Version:</strong> Run <code>/version</code> in console. If using 1.19+, chat signing is the main issue.</li>
-      <li><strong>Install NoEncryption:</strong> Download and place <a href="https://modrinth.com/plugin/noencryption" target="_blank">NoEncryption</a> (or DisableChatSigning) into the <code>plugins/</code> folder, then restart the server.</li>
+      <li><strong>Install NoEncryption:</strong> Download and place <a href="https://modrinth.com/plugin/noencryption" target="_blank">NoEncryption</a> (or DisableChatSigning) into the <code>plugins/</code> folder, then restart the server.
+  <p>If you don’t want to use plugins (Paper only), edit <code>config/paper-global.yml</code> and set:</p>
+  <pre>
+messages:
+  chat:
+    signed: false
+  </pre>
+</li>
       <li><strong>Edit Floodgate Config:</strong> Open <code>plugins/Floodgate/config.yml</code> and change  
-        <pre>username-prefix: "*"</pre>  
-        to something safer, e.g.  
+        <pre>username-prefix: "*" <-- Please use this (it looks nicer and almost every server uses it)</pre>  
+        or change it how you like
+        Example:
         <pre>username-prefix: "Bed_"</pre>
       </li>
       <li><strong>Check Permissions:</strong> Make sure Bedrock players have chat permissions (e.g., with LuckPerms).</li>
