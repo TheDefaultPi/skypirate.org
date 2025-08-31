@@ -1,123 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Manhattanhenge Simulation</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fixing Bedrock Chat - Geyser & Floodgate</title>
   <style>
-    body { font-family: sans-serif; text-align: center; background: #222; color: white; }
-    canvas { background: #444; display: block; margin: 20px auto; }
-    button { margin: 10px; padding: 10px 20px; font-size: 16px; }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9fafb;
+      color: #1f2937;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #4f46e5;
+      color: white;
+      padding: 2rem;
+      text-align: center;
+    }
+    header h1 {
+      font-size: 2.5rem;
+      margin: 0;
+    }
+    main {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 1rem;
+    }
+    h2 {
+      color: #374151;
+      margin-top: 2rem;
+    }
+    ol {
+      padding-left: 1.5rem;
+      line-height: 1.6;
+    }
+    li {
+      margin-bottom: 0.75rem;
+    }
+    .button-container {
+      margin-top: 2rem;
+      text-align: center;
+    }
+    .github-button {
+      background-color: #111827;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      text-decoration: none;
+      font-size: 1rem;
+      border-radius: 8px;
+      transition: background 0.3s ease;
+    }
+    .github-button:hover {
+      background-color: #374151;
+    }
   </style>
 </head>
 <body>
-  <h1>Manhattanhenge Simulation</h1>
-  <canvas id="simCanvas" width="600" height="300"></canvas>
-  <div>
-    <button onclick="togglePause()" id="pauseBtn">Pause</button>
-    <button onclick="restartSim()">Restart</button>
-  </div>
-<script>
-  const canvas = document.getElementById('simCanvas');
-  const ctx = canvas.getContext('2d');
+  <header>
+    <h1>Dear Hazel, or whoever is fixing this</h1>
+  </header>
+  <main>
+    <h2>Step-by-Step Guide to Fix Bedrock Chat</h2>
+    <ol>
+      <li><strong>Check Server Version:</strong> Run <code>/version</code> in console. If using 1.19+, chat signing is the main issue.</li>
+      <li><strong>Install NoEncryption:</strong> Download and place <a href="https://modrinth.com/plugin/noencryption" target="_blank">NoEncryption</a> (or DisableChatSigning) into the <code>plugins/</code> folder, then restart the server.</li>
+      <li><strong>Edit Floodgate Config:</strong> Open <code>plugins/Floodgate/config.yml</code> and change  
+        <pre>username-prefix: "*"</pre>  
+        to something safer, e.g.  
+        <pre>username-prefix: "Bed_"</pre>
+      </li>
+      <li><strong>Check Permissions:</strong> Make sure Bedrock players have chat permissions (e.g., with LuckPerms).</li>
+      <li><strong>Test Without Chat Plugins:</strong> Temporarily remove EssentialsXChat/VentureChat/DeluxeChat and restart to confirm chat works.</li>
+    </ol>
 
-  let t = 0;
-  let paused = false;
-
-  const startTime = 19.8; 
-  const endTime = 20.5;  
-
-  const streetNames = [
-    "14th St", "23rd St", "34th St", "42nd St", "49th St",
-    "57th St", "59th St", "66th St", "72nd St", "79th St"
-  ];
-
-  function drawStreetGrid() {
-    ctx.fillStyle = '#222';
-    ctx.font = '12px sans-serif';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'top';
-
-    let i = 0;
-    for (let x = 0; x < canvas.width; x += 60) {
-      ctx.fillRect(x, 0, 20, canvas.height);
-
-      const percent = x / canvas.width;
-      const time = startTime + percent * (endTime - startTime);
-      let hours = Math.floor(time);
-      const minutes = Math.round((time - hours) * 60);
-      const ampm = hours >= 12 ? 'PM' : 'AM';
-      hours = hours % 12;
-      if (hours === 0) hours = 12;
-      const label = `${hours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
-      ctx.fillStyle = 'white';
-      ctx.fillText(label, x + 10, canvas.height - 35);
-
-      const street = streetNames[i % streetNames.length];
-      ctx.fillText(street, x + 10, canvas.height - 20);
-      ctx.fillStyle = '#222';
-      i++;
-    }
-  }
-
-  function drawSun(x, y) {
-    ctx.beginPath();
-    ctx.arc(x, y, 20, 0, Math.PI * 2);
-    ctx.fillStyle = '#FDB813';
-    ctx.fill();
-    ctx.closePath();
-  }
-
-  function drawAlignmentEffect(x) {
-    for (let bx = 0; bx < canvas.width; bx += 60) {
-      const gapStart = bx + 20;
-      const gapEnd = bx + 60;
-
-      if (x >= gapStart && x <= gapEnd) {
-        ctx.fillStyle = 'rgba(255, 223, 0, 0.25)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        break;
-      }
-    }
-  }
-
-  function draw(x, y) {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawStreetGrid();
-    drawAlignmentEffect(x);
-    drawSun(x, y);
-  }
-
-  function update() {
-    if (!paused) {
-      t += 0.003;
-      if (t > 1) t = 0;
-    }
-
-    const x = t * canvas.width;
-    const y = canvas.height - 30 - Math.sin(Math.PI * t) * 150;
-
-    draw(x, y);
-    requestAnimationFrame(update);
-  }
-
-  function togglePause() {
-    paused = !paused;
-    document.getElementById('pauseBtn').textContent = paused ? 'Resume' : 'Pause';
-  }
-
-  function restartSim() {
-    t = 0;
-    paused = false;
-    document.getElementById('pauseBtn').textContent = 'Pause';
-  }
-
-  update();
-</script>
-<p><img src="Screenshot from 2025-05-01 06-22-52.png" alt="map"></p>
-<button onclick="window.location.href='https://github.com/TheDefaultPi/skypirate.org/'">
-  Source Code
-</button>
-<p>By: DefaultPi and Euphonical2</p>
+    <div class="button-container">
+      <a class="github-button" href="https://github.com/TheDefaultPi" target="_blank">
+        Visit My GitHub
+      </a>
+    </div>
+  </main>
 </body>
 </html>
